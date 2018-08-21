@@ -1,0 +1,93 @@
+@import url(http://fonts.googleapis.com/css?family=Lato);
+body {
+  padding-top: 120px;
+}
+
+h1 {
+  font-family: 'Lato', sans-serif;
+  text-align: center;
+}
+
+.dice {
+  border: 5px solid #ffffff;
+  border-radius: 20px;
+  cursor: pointer;
+  height: 100px;
+  margin: 0 auto;
+  overflow: hidden;
+  width: 100px;
+	transform: scale(0.25);
+	color: red;
+	position: fixed;
+	top: 3px;
+	left: -10px;
+}
+
+.dice:active {
+  background: #ffffff;
+}
+
+.dice:active .dot {
+  border-color: rgb(248, 184, 236);
+}
+
+.side {
+  height: 100px;
+  position: relative;
+  width: 100%;
+}
+
+.side:first-child {
+  margin-top: -00px;
+  transition: 2s;
+}
+
+.dot {
+  border: 5px solid #ffffff;
+  border-radius: 50%;
+  height: 12px;
+  margin-top: -10px;
+  margin-left: -10px;
+  position: absolute;
+  width: 12px;
+}
+
+.dot.c {
+  top: 50%;
+  left: 50%;
+}
+
+.dot.tl {
+  top: 20px;
+  left: 20px;
+}
+
+.dot.tr {
+  margin-right: -9px;
+  top: 20px;
+  right: 20px;
+}
+
+.dot.cl {
+  top: 50%;
+  left: 20px;
+}
+
+.dot.cr {
+  margin-right: -9px;
+  top: 50%;
+  right: 20px;
+}
+
+.dot.bl {
+  margin-bottom: -9px;
+  left: 20px;
+  bottom: 20px;
+}
+
+.dot.br {
+  margin-right: -9px;
+  margin-bottom: -9px;
+  right: 20px;
+  bottom: 20px;
+}

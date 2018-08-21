@@ -1,0 +1,254 @@
+<html>
+	<head>
+		<title>Music</title>
+		<link rel="stylesheet" href="css/style.css">
+		<link rel="stylesheet" href="css/input-style.css">
+		<link rel="stylesheet" href="css/font-awesome.css">
+		<link rel="stylesheet" href="css/scrollbar.css">
+		<link rel="stylesheet" href="css/dice.css">
+		<link rel="stylesheet" href="css/remodal.css">
+		<link rel="stylesheet" href="css/remodal-default-theme.css">
+		<link href="https://fonts.googleapis.com/css?family=Indie+Flower" rel="stylesheet">
+	</head>
+	<body>
+		
+		<div class="settings-panel closed" id="settings-panel">
+			<div class="panel-title">
+				Settings
+			</div>
+			<div class="panel-browse">
+				<input id="browse-path" type="text" placeholder="Music Folder"> <div id="browse-button">browse</div>
+				<input id="rebuildlib-display" type="text" placeholder="Build Library" readonly> <div id="buildlib-button">start</div>
+				<div id="save-button">save</div>
+			</div>
+		</div>
+		
+		<div id="dark-overlay" class="dark-overlay"></div>
+		
+		<div class="container">				
+			<div class="top-bar">
+				<div class="button-bar">
+					<div class="app-name">
+						<i class="fa fa-heart" id="heart-button"></i>
+					</div>
+					<div class="close-button" onClick="window.close()">
+						&times;
+					</div>
+				</div>
+				<div class="dice" onClick="randTrack()">
+					<div class="side">
+						<div class="dot c"></div>
+					</div>
+				</div>
+<!--
+				<div class="searchBox">
+					<input class="text" placeholder="&#xF002; Search">
+				</div>
+-->
+			</div>
+			<div class="main remodal-bg" >
+				<div class="heading">Music</div>
+				<div class="album-artwork-top">					
+					<div class="art-title" id="art0">
+						<img src="./assets/images/artwork-temp.png">
+						<p class="art-title-title">Loading <i class="fa fa-refresh  fa-spin fa-x fa-fw"></i></p>
+					</div>
+					<div class="art-title" id="art1">
+						<img src="./assets/images/artwork-temp.png">
+						<p class="art-title-title">Loading <i class="fa fa-refresh  fa-spin fa-x fa-fw"></i></p>
+					</div>
+					<div class="art-title" id="art2">
+						<img src="./assets/images/artwork-temp.png">
+						<p class="art-title-title">Loading <i class="fa fa-refresh  fa-spin fa-x fa-fw"></i></p>
+					</div>
+					<div class="art-title" id="art3">
+						<img src="./assets/images/artwork-temp.png">
+						<p class="art-title-title">Loading <i class="fa fa-refresh  fa-spin fa-x fa-fw"></i></p>
+					</div>
+					<div class="art-title" id="art4">
+						<img src="./assets/images/artwork-temp.png">
+						<p class="art-title-title">Loading <i class="fa fa-refresh  fa-spin fa-x fa-fw"></i></p>
+					</div>
+				</div>
+				<div id="all-music" class="all-music-section">
+					<div class="all-music-heading">
+						All Tracks
+					</div>
+					<div class="searchBox">
+						<input class="search" placeholder="&#xF002; Search">
+					</div>
+					<button class="top-name" data-sort="al-music-title">
+						Name
+					</button>
+					<button class="top-artist" data-sort="al-music-artist">Artist</button>
+					<button class="top-year" data-sort="al-music-year">Year</button>
+					<ul id="all-music-list" class="list">
+						<!--div id="load-tracks">SHOW ALL TRACKS</i></div-->
+<!--
+						<li class="list-item-bg" onclick="playTrack()">
+							<p class="al-music-title">Dangerous</p>
+							<p class="al-music-artist">David Guetta</p>
+							<p class="al-music-year">2014</p>
+						</li>
+-->
+					</ul>
+				</div>
+				
+								
+				<div class="recommended-music-section">
+				</div>
+				
+			</div>
+			<div class="music-bar">
+				<div class="bar-artwork">
+					<img id="bar-artwork" src="./assets/images/artwork-temp.png">
+				</div>
+				<div class="bar-info" id="bar-info">
+					<p id="bar-music">Play</p>
+					<p id="bar-artist">Something</p>
+				</div>
+				<div class="seekBar">
+					<input type="range" id="seek-bar" value="0">
+				</div>
+				<div class="controls">
+					<i class="fa fa-volume-up" id="mute"></i>
+					<div class="volume-slider">
+						<input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.1">
+					</div>
+					<i class="fa fa-backward" id="backward" aria-hidden="true"></i>
+					<i class="fa fa-play" id="play-pause"></i>
+					<i class="fa fa-forward" id="forward" aria-hidden="true"></i>	
+				</div>
+			</div>
+		</div>
+		
+		
+		<audio id="music-track" preload="none">
+			<source id="music-source" src="">
+		</audio>
+		
+		<script>window.$ = window.jQuery = require('jquery');</script>
+		<script src="js/jquery-3.1.1.min.js"></script>
+		<script src="js/dice.js"></script>
+		<script src="js/list.js"></script>
+		<script src="renderer.js"></script>
+		<script>
+			window.onload = function() {
+							
+				// Audio
+				var audio = document.getElementById("music-track");
+				
+			
+				audio.volume = 0.1;
+
+				// Buttons
+				var playButton = document.getElementById("play-pause");
+				var muteButton = document.getElementById("mute");
+
+				// Sliders
+				var seekBar = document.getElementById("seek-bar");
+				var volumeBar = document.getElementById("volume-slider");
+				// Event listener for the play/pause button
+				playButton.addEventListener("click", function() {
+					if (audio.paused == true) {
+						// Play the video
+						audio.play();
+						playButton.classList.remove('fa-play');
+						playButton.classList.add('fa-pause');
+
+					} else {
+						// Pause the video
+						audio.pause();
+						playButton.classList.remove('fa-pause');
+						playButton.classList.add('fa-play');
+					}
+				});
+				
+				// Event listener for the mute button
+				muteButton.addEventListener("click", function() {
+				  if (audio.muted == false) {
+					// Mute the video
+					audio.muted = true;
+				  	muteButton.classList.remove('fa-volume-up');
+					muteButton.classList.add('fa-volume-off');
+				  } else {
+					// Unmute the video
+					audio.muted = false;
+				  	muteButton.classList.remove('fa-volume-off');
+					muteButton.classList.add('fa-volume-up');
+				  }
+				});
+				// Event listener for the seek bar
+				seekBar.addEventListener("change", function() {
+				  // Calculate the new time
+				  var time = audio.duration * (seekBar.value / 100);
+
+				  // Update the video time
+				  audio.currentTime = time;
+				});
+				
+				
+				// Update the seek bar as the audio plays
+//				audio.addEventListener("timeupdate", function() {
+//				  // Calculate the slider value
+//				  var value = (100 / audio.duration) * audio.currentTime;
+//
+//				  // Update the slider value
+//				  seekBar.value = value;
+//				});
+				
+				audio.addEventListener("timeupdate", function() {
+				  // Calculate the slider value
+				  var value = (100 / audio.duration) * audio.currentTime;
+
+				  // Update the slider value
+				  seekBar.value = value;
+						
+				});
+				
+				// Pause the video when the slider handle is being dragged
+				seekBar.addEventListener("mousedown", function() {
+				  audio.pause();
+				});
+
+				// Play the video when the slider handle is dropped
+				seekBar.addEventListener("mouseup", function() {
+				  audio.play();
+				});
+				
+				// Event listener for the volume bar
+				volumeBar.addEventListener("change", function() {
+				  // Update the video volume
+				  audio.volume = volumeBar.value;
+				});
+				
+				function firstExec () {
+					playTrack(0);
+					audio.pause();
+					playButton.classList.remove('fa-pause');
+					playButton.classList.add('fa-play');
+				}
+				
+			}			
+		</script>	
+		<script src="js/remodal.min.js"></script>
+		<script>
+			var settingsPanel = document.getElementById('settings-panel');
+			var heartButton = document.getElementById('heart-button');
+			var darkOverlay = document.getElementById('dark-overlay');
+			heartButton.addEventListener('click', function() {
+				if (settingsPanel.classList.contains('closed')) {
+					settingsPanel.classList.remove('closed')
+					darkOverlay.classList.add('darken');
+				} else {
+					settingsPanel.classList.add('closed');
+					darkOverlay.classList.remove('darken');
+				}
+			})
+			darkOverlay.addEventListener('click', function() {
+				settingsPanel.classList.add('closed');
+				darkOverlay.classList.remove('darken');
+			})
+		</script>
+	</body>
+</html>
